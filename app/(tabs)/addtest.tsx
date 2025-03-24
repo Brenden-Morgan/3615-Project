@@ -125,3 +125,93 @@ const App = () => {
 };
 
 export default App
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+
+  icons: {
+    width: 50,
+    height: 50,
+  },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  
+  header_message: {
+    flexDirection: "column",
+    paddingLeft: 10,
+  },
+  
+  header_settings: {
+    paddingRight: 10,
+  },
+
+  progress_bar: {
+    flex: 0.5,
+    flexWrap: "wrap",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+
+  calendar_view: {
+    flex: 0.5,
+    flexWrap: "wrap",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+
+  reminder_input: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+  },
+
+  reminder_list: {
+    padding: 10,
+  },
+
+  list_title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+
+  reminder_item: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+
+  edit_delete: {
+    color: "blue",
+    marginLeft: 10,
+  },
+
+  footer: {
+    flex: 0.2,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignContent: "flex-end",
+    justifyContent: "space-between",
+    padding: 10,
+    backgroundColor: "lightgreen",
+  },
+});
