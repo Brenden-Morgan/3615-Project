@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import {
   View,
   Text,
@@ -9,6 +9,8 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 //<a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons">Calendar icons created by CreativeCons - Flaticon</a>
 import Calendar from "@/assets/images/calendar.png";
@@ -16,7 +18,7 @@ import Calendar from "@/assets/images/calendar.png";
 import Settings from "@/assets/images/settings.png";
 //<a href="https://www.flaticon.com/free-icons/home-button" title="home button icons">Home button icons created by Freepik - Flaticon</a>
 import Home from "@/assets/images/home.png";
-//<a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icons created by dmitri13 - Flaticon</a>
+//<a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icorns created by dmitri13 - Flaticon</a>
 import Add from "@/assets/images/add.png";
 //<a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Chanut - Flaticon</a>
 import List from "@/assets/images/list.png";
@@ -27,47 +29,51 @@ import Progress from "@/assets/images/progress-bar.png";
 
 const app = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.header_message}>
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Hello!</Text>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            Keep Working Hard!
-          </Text>
-        </View>
-        <View style={styles.header_settings}>
-          <TouchableOpacity onPress={() => Alert.alert("Settings Page")}>
-            <Image style={styles.icons} source={Settings} />
-          </TouchableOpacity>
-        </View>
-      </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.header_message}>
+              <Text style={{ fontSize: 30, fontWeight: "bold" }}>Hello!</Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                Keep Working Hard!
+              </Text>
+            </View>
+            <View style={styles.header_settings}>
+              <TouchableOpacity onPress={() => Alert.alert("Settings Page")}>
+                <Image style={styles.icons} source={Settings} />
+              </TouchableOpacity>
+            </View>
+          </View>
 
-      <View style={styles.progress_bar}>
-        <Image style={{ width: 100, height: 100 }} source={Progress} />
-      </View>
+          <View style={styles.progress_bar}>
+            <Image style={{ width: 100, height: 100 }} source={Progress} />
+          </View>
 
-      <View style={styles.calendar_view}>
-        <Text>10 Tasks Remaining</Text>
-      </View>
+          <View style={styles.calendar_view}>
+            <Text>10 Tasks Remaining</Text>
+          </View>
 
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={() => Alert.alert("Home Page")}>
-          <Image style={styles.icons} source={Home} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Timer Page")}>
-          <Image style={styles.icons} source={Timer} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Add Task Page")}>
-          <Image style={styles.icons} source={Add} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("List Page")}>
-          <Image style={styles.icons} source={List} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Calendar Page")}>
-          <Image style={styles.icons} source={Calendar} />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+          <View style={styles.footer}>
+            <TouchableOpacity onPress={() => Alert.alert("Home Page")}>
+              <Image style={styles.icons} source={Home} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert("Timer Page")}>
+              <Image style={styles.icons} source={Timer} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert("Add Task Page")}>
+              <Image style={styles.icons} source={Add} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert("List Page")}>
+              <Image style={styles.icons} source={List} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert("Calendar Page")}>
+              <Image style={styles.icons} source={Calendar} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -120,3 +126,25 @@ const styles = StyleSheet.create({
     backgroundColor: "lightgreen",
   },
 });
+ */
+
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
+
+const MyStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "Welcome" }}
+        />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
