@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
+  Button,
+  TextInput,
   Alert,
   Image,
   TouchableOpacity,
-  TextInput,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as Notifications from 'expo-notifications'; // Import Notifications
 
+// Import your assets
 import Calendar from "@/assets/images/calendar.png";
 import Settings from "@/assets/images/settings.png";
 import Home from "@/assets/images/home.png";
@@ -18,36 +22,41 @@ import List from "@/assets/images/list.png";
 import Timer from "@/assets/images/timer.png";
 import Progress from "@/assets/images/progress-bar.png";
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
-  const [reminders, setReminders] = useState([]);
-  const [newReminder, setNewReminder] = useState("");
+  const [tasks, setTasks] = useState([]); // State to store tasks
 
-  const addReminder = () => {
-    if (newReminder.trim()) {
-      setReminders([...reminders, newReminder]);
-      setNewReminder("");
-    } else {
-      Alert.alert("Please enter a reminder.");
-    }
-  };
-
-  const editReminder = (index) => {
-    const updatedReminder = prompt("Edit your reminder:", reminders[index]);
-    if (updatedReminder) {
-      const updatedReminders = reminders.map((reminder, i) =>
-        i === index ? updatedReminder : reminder
-      );
-      setReminders(updatedReminders);
-    }
-  };
-
-  const deleteReminder = (index) => {
-    const updatedReminders = reminders.filter((_, i) => i !== index);
-    setReminders(updatedReminders);
+  const addTask = (task) => {
+    setTasks((prevTasks) => [...prevTasks, task]);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Timer" component={TimerScreen} />
+        <Stack.Screen name="AddTask">
+          {(props) => <AddTaskScreen {...props} addTask={addTask} />}
+        </Stack.Screen>
+        <Stack.Screen name="ViewTasks">
+          {(props) => <ViewTasksScreen {...props} tasks={tasks} />}
+        </Stack.Screen>
+        <Stack.Screen name="CalendarView">
+          {(props) => <CalendarViewScreen {...props} tasks={tasks} />}
+        </Stack.Screen>
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+const HomeScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.header_message}>
           <Text style={{ fontSize: 30, fontWeight: "bold" }}>Hello!</Text>
@@ -56,7 +65,7 @@ const App = () => {
           </Text>
         </View>
         <View style={styles.header_settings}>
-          <TouchableOpacity onPress={() => Alert.alert("Settings Page")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
             <Image style={styles.icons} source={Settings} />
           </TouchableOpacity>
         </View>
@@ -70,141 +79,371 @@ const App = () => {
         <Text>10 Tasks Remaining</Text>
       </View>
 
-      {/* Add Reminder Input */}
-      <View style={styles.reminder_input}>
-        <TextInput
-          style={styles.input}
-          placeholder="Add a new reminder"
-          value={newReminder}
-          onChangeText={setNewReminder}
-        />
-        <TouchableOpacity onPress={addReminder}>
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
           <Image style={styles.icons} source={Add} />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const TimerScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Timer</Text>
+        </View>
+        <View style={styles.header_settings}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image style={styles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      {/* Reminder List */}
-      <View style={styles.reminder_list}>
-        <Text style={styles.list_title}>Your Reminders:</Text>
-        {reminders.length > 0 ? (
-          reminders.map((reminder, index) => (
-            <View key={index} style={styles.reminder_item}>
-              <Text>{reminder}</Text>
-              <TouchableOpacity onPress={() => editReminder(index)}>
-                <Text style={styles.edit_delete}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteReminder(index)}>
-                <Text style={styles.edit_delete}>Delete</Text>
-              </TouchableOpacity>
+      <View style={styles.progress_bar}></View>
+
+      <View style={styles.calendar_view}></View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+          <Image style={styles.icons} source={Add} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const AddTaskScreen = ({ navigation }) => {
+  const [taskName, setTaskName] = useState("");
+  const [taskDate, setTaskDate] = useState("");
+
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== 'granted') {
+        await Notifications.requestPermissionsAsync();
+      }
+    };
+
+    requestPermissions();
+  }, []);
+
+  const scheduleNotification = async () => {
+    const schedulingOptions = {
+      content: {
+        title: "Task Reminder",
+        body: `Don't forget: ${taskName}`,
+      },
+      trigger: {
+        date: new Date(taskDate), // Convert to Date object
+      },
+    };
+
+    await Notifications.scheduleNotificationAsync(schedulingOptions);
+    addTask({ name: taskName, date: taskDate });
+    Alert.alert("Notification Scheduled", `Task "${taskName}" is scheduled!`);
+    navigation.navigate("ViewTasks"); // Navigate to ViewTasks after scheduling
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Add Task</Text>
+        </View>
+        <View style={styles.header_settings}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image style={styles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Task Name"
+          value={taskName}
+          onChangeText={setTaskName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Date/Time (YYYY-MM-DDTHH:MM)"
+          value={taskDate}
+          onChangeText={setTaskDate}
+        />
+        <Button title="Add Task" onPress={scheduleNotification} />
+      </View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+          <Image style={styles.icons} source={Add} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const ViewTasksScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>View Tasks</Text>
+        </View>
+        <View style={styles.header_settings}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image style={styles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.progress_bar}></View>
+
+      <View style={styles.calendar_view}></View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+          <Image style={styles.icons} source={Add} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const CalendarScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Calendar</Text>
+        </View>
+        <View style={styles.header_settings}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image style={styles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.progress_bar}>{tasks.length === 0 ? (
+          <Text>No tasks available</Text>
+        ) : (
+          tasks.map((task, index) => (
+            <View key={index} style={styles.taskItem}>
+              <Text style={styles.taskTitle}>{task.name}</Text>
+              <Text style={styles.taskDate}>{task.date}</Text>
             </View>
           ))
+        )}
+      </View>
+
+      // <View style={styles.calendar_view}></View>
+ 
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+          <Image style={styles.icons} source={Add} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const CalendarViewScreen = ({ navigation, tasks }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Calendar View</Text>
+        </View>
+        <View style={styles.header_settings}>
+          <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+            <Image style={styles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.progress_bar}>
+        {tasks.length === 0 ? (
+          <Text>No tasks available</Text>
         ) : (
-          <Text>No reminders added yet.</Text>
+          tasks.map((task, index) => (
+            <View key={index} style={styles.taskItem}>
+              <Text style={styles.taskTitle}>{task.name}</Text>
+              <Text style={styles.taskDate}>{task.date}</Text>
+            </View>
+          ))
         )}
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity onPress={() => Alert.alert("Home Page")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
           <Image style={styles.icons} source={Home} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Timer Page")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
           <Image style={styles.icons} source={Timer} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Add Task Page")}>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
           <Image style={styles.icons} source={Add} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("List Page")}>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
           <Image style={styles.icons} source={List} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => Alert.alert("Calendar Page")}>
+        <TouchableOpacity onPress={() => navigation.navigate("CalendarView")}>
           <Image style={styles.icons} source={Calendar} />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
-export default App
+const SettingsScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <View style={styles.header_message}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Settings</Text>
+        </View>
+      </View>
+
+      <View style={styles.progress_bar}></View>
+
+      <View style={styles.calendar_view}></View>
+
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Image style={styles.icons} source={Home} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Timer")}>
+          <Image style={styles.icons} source={Timer} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
+          <Image style={styles.icons} source={Add} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ViewTasks")}>
+          <Image style={styles.icons} source={List} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Calendar")}>
+          <Image style={styles.icons} source={Calendar} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Timer" component={TimerScreen} />
+        <Stack.Screen name="AddTask" component={AddTaskScreen} />
+        <Stack.Screen name="ViewTasks" component={ViewTasksScreen} />
+        <Stack.Screen name="Calendar" component={CalendarScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+//export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
   },
-
   icons: {
     width: 50,
     height: 50,
   },
-
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
   },
-  
   header_message: {
     flexDirection: "column",
     paddingLeft: 10,
   },
-  
   header_settings: {
     paddingRight: 10,
   },
-
   progress_bar: {
     flex: 0.5,
     flexWrap: "wrap",
     alignContent: "center",
     justifyContent: "center",
+    padding: 10,
   },
-
   calendar_view: {
     flex: 0.5,
     flexWrap: "wrap",
     alignContent: "center",
     justifyContent: "center",
   },
-
-  reminder_input: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-  },
-
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-  },
-
-  reminder_list: {
-    padding: 10,
-  },
-
-  list_title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-
-  reminder_item: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-  },
-
-  edit_delete: {
-    color: "blue",
-    marginLeft: 10,
-  },
-
   footer: {
     flex: 0.2,
     flexDirection: "row",
@@ -214,4 +453,29 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "lightgreen",
   },
+  inputContainer: {
+    padding: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+  taskItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  taskTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  taskDate: {
+    fontSize: 14,
+    color: "gray",
+  },
 });
+
+export default App;
