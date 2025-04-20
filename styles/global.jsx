@@ -1,0 +1,106 @@
+import { StyleSheet } from "react-native";
+
+export const globalStyles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    margin: 500,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 50,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  icons: {
+    width: 50,
+    height: 50,
+  },
+
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  header_message: {
+    flexDirection: "column",
+    paddingLeft: 10,
+  },
+  header_settings: {
+    paddingRight: 10,
+  },
+
+  progress_bar: {
+    flex: 0.5,
+    flexWrap: "wrap",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+
+  calendar_view: {
+    flex: 0.5,
+    flexWrap: "wrap",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+
+  footer: {
+    flex: 0.2,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignContent: "flex-end",
+    justifyContent: "space-between",
+    padding: 10,
+    backgroundColor: "lightgreen",
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: "#777",
+    padding: 8,
+    margin: 10,
+    width: 200,
+  },
+
+  item: {
+    padding: 16,
+    marginTop: 16,
+    borderColor: "#bbb",
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderRadius: 10,
+  },
+});
