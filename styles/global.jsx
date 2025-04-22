@@ -44,7 +44,16 @@ export const globalStyles = StyleSheet.create({
 
   container: {
     flex: 1,
+    padding: 16,
     backgroundColor: "white",
+    height: 100,
+    flexGrow: 1,
+  },
+  mainContent: {
+    flex: 1,
+    flexGrow: 1,
+    padding: 40,
+    alignItems: "stretch",
   },
   icons: {
     width: 50,
@@ -52,8 +61,11 @@ export const globalStyles = StyleSheet.create({
   },
 
   header: {
+    height: 80,
+    backgroundColor: "coral",
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingVertical: 12,
   },
   header_message: {
     flexDirection: "column",

@@ -16,8 +16,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Settings from "@/assets/images/settings.png";
 
 export default function TimerScreen({ navigation }) {
-  let nextId = 0;
-
   const route = useRoute();
   const receivedArray = route.params?.tasks || [];
   const [tasks, setTasks] = useState([]);

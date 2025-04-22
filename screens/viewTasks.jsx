@@ -6,6 +6,9 @@ import {
   Alert,
   Modal,
   Pressable,
+  FlatList,
+  StyleSheet,
+  ScrollView,
   Image,
   TouchableOpacity,
 } from "react-native";
@@ -16,8 +19,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Settings from "@/assets/images/settings.png";
 
 export default function ViewTasksScreen({ navigation }) {
-  let nextId = 0;
-
   const route = useRoute();
   const receivedArray = route.params?.tasks || [];
   const [tasks, setTasks] = useState([]);
@@ -48,7 +49,7 @@ export default function ViewTasksScreen({ navigation }) {
 
   const pressHandler = (key) => {
     setTasks((prevTasks) => {
-      return prevTasks.filter((tasks) => receivedArray.key != key);
+      return prevTasks.filter((tasks) => tasks.id != key);
     });
   };
 
@@ -67,21 +68,21 @@ export default function ViewTasksScreen({ navigation }) {
         </View>
       </View>
 
-      <View style={globalStyles.progress_bar}>
-        {tasks.map((item) => {
-          return (
-            <View key={item.id}>
-              <TouchableOpacity onPress={() => editScreen(item.name)}>
-                <Text style={globalStyles.item}>
-                  {item.class} {item.name} {item.description}
-                </Text>
+      <View style={globalStyles.mainContent}>
+        {tasks.length < 1 ? (
+          <Text>No Tasks Available</Text>
+        ) : (
+          <FlatList
+            keyExtractor={(item) => item.id}
+            data={tasks}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => pressHandler(item.id)}>
+                <Text style={styles.item}>{item.name}</Text>
               </TouchableOpacity>
-            </View>
-          );
-        })}
+            )}
+          />
+        )}
       </View>
-
-      <View style={globalStyles.calendar_view}></View>
 
       <View style={globalStyles.footer}>
         {[
@@ -102,3 +103,14 @@ export default function ViewTasksScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  item: {
+    padding: 16,
+    marginTop: 16,
+    borderColor: "#bbb",
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderRadius: 10,
+  },
+});

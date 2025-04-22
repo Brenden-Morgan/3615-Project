@@ -3,6 +3,7 @@ import {
   View,
   Text,
   TextInput,
+  Image,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
@@ -12,9 +13,11 @@ import { useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { globalStyles } from "@/styles/global";
 
-export default function AddTaskScreen({ navigation }) {
-  let nextId = 0;
+import Settings from "@/assets/images/settings.png";
 
+let nextId = 0;
+
+export default function AddTaskScreen({ navigation }) {
   const route = useRoute();
   const receivedArray = route.params?.tasks || [];
   const [tasks, setTasks] = useState([]);
@@ -39,15 +42,24 @@ export default function AddTaskScreen({ navigation }) {
   const [showDuePicker, setShowDuePicker] = useState(false);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.mainContent}>
+    <View style={styles.container}>
+      <View style={globalStyles.header}>
         <Text style={styles.title}>ADD NEW TASK</Text>
         {/* 
         <View style={styles.card}>
           //
           <Icon name="school-outline" size={20} />
         </View> */}
+        <View style={globalStyles.header_settings}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Settings", { tasks: tasks })}
+          >
+            <Image style={globalStyles.icons} source={Settings} />
+          </TouchableOpacity>
+        </View>
+      </View>
 
+      <View style={styles.mainContent}>
         <TextInput
           placeholder="Course #"
           style={[styles.input]}
@@ -146,7 +158,7 @@ export default function AddTaskScreen({ navigation }) {
           </TouchableOpacity>
         ))}
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -161,7 +173,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   title: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 16,
