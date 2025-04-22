@@ -63,72 +63,7 @@ export default function CalendarScreen({ navigation }) {
 
       <View style={globalStyles.progress_bar}></View>
 
-      <View style={globalStyles.calendar_view}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Task Added");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={globalStyles.centeredView}>
-            <View style={globalStyles.modalView}>
-              <Text style={globalStyles.modalText}>Enter Task: </Text>
-              <TextInput
-                style={globalStyles.input}
-                placeholder="task name"
-                onChangeText={(val) => setName(val)}
-              />
-              <TextInput
-                style={globalStyles.input}
-                placeholder="class(optional)"
-                onChangeText={(val) => setClassName(val)}
-              />
-              <TextInput
-                style={globalStyles.input}
-                placeholder="description"
-                onChangeText={(val) => setDesc(val)}
-              />
-              <TextInput
-                style={globalStyles.input}
-                placeholder="due date"
-                onChangeText={(val) => setDate(val)}
-              />
-              <TextInput
-                style={globalStyles.input}
-                placeholder="time(optional)"
-                onChangeText={(val) => setTime(val)}
-              />
-              <TextInput
-                style={globalStyles.input}
-                placeholder="set reminder"
-              />
-
-              <Pressable
-                style={[globalStyles.button, globalStyles.buttonClose]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                  setTasks([
-                    ...tasks,
-                    {
-                      id: nextId++,
-                      name: name,
-                      class: className,
-                      description: desc,
-                      dueDate: date,
-                      time: time,
-                    },
-                  ]);
-                }}
-              >
-                <Text style={globalStyles.textStyle}>Add Task</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-      </View>
+      <View style={globalStyles.calendar_view}></View>
 
       <View style={globalStyles.footer}>
         {[
@@ -140,7 +75,7 @@ export default function CalendarScreen({ navigation }) {
         ].map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate(item.screen)}
+            onPress={() => navigation.navigate(item.screen, { tasks: tasks })}
           >
             <Icon name={item.icon + "-outline"} size={50} />
           </TouchableOpacity>

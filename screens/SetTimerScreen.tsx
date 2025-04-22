@@ -22,30 +22,6 @@ export default function TimerScreen({}) {
     if (selectedTime) setTime(selectedTime);
   };
 
-  // let nextId = 0;
-
-  // const route = useRoute();
-  // const receivedArray = route.params?.tasks || [];
-  // const [tasks, setTasks] = useState([]);
-
-  // const handleSetTasks = () => {
-  //   setTasks([...receivedArray]);
-  // };
-
-  // useEffect(() => {
-  //   const onScreenLoad = () => {
-  //     handleSetTasks();
-  //   };
-  //   onScreenLoad();
-  // }, []);
-
-  // const [name, setName] = useState("");
-  // const [className, setClassName] = useState("");
-  // const [date, setDate] = useState("");
-  // const [time, setTime] = useState("");
-  // const [desc, setDesc] = useState("");
-  // const [modalVisible, setModalVisible] = useState(false);
-
   return (
     <View style={styles.container}>
       {/* Header */}

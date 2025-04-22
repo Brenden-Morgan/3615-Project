@@ -27,9 +27,4 @@ function app() {
 
 export default app;
 
-//<a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons">Calendar icons created by CreativeCons - Flaticon</a>
 //<a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/home-button" title="home button icons">Home button icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/plus" title="plus icons">Plus icorns created by dmitri13 - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/list" title="list icons">List icons created by Chanut - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/timer" title="timer icons">Timer icons created by Fahmi Yahya - Flaticon</a>

@@ -73,7 +73,7 @@ export default function ViewTasksScreen({ navigation }) {
             <View key={item.id}>
               <TouchableOpacity onPress={() => editScreen(item.name)}>
                 <Text style={globalStyles.item}>
-                  {item.name} {item.class} {item.dueDate} {item.time}{" "}
+                  {item.class} {item.name} {item.description}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -82,92 +82,6 @@ export default function ViewTasksScreen({ navigation }) {
       </View>
 
       <View style={globalStyles.calendar_view}></View>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={editModalVisible}
-        onRequestClose={() => {
-          Alert.alert("Task Added");
-          setEditModalVisible(!editModalVisible);
-        }}
-      >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
-            <Text style={globalStyles.modalText}>Edit Task {name} </Text>
-            <Pressable
-              style={[globalStyles.button, globalStyles.buttonClose]}
-              onPress={() => {
-                setEditModalVisible(!editModalVisible);
-              }}
-            >
-              <Text style={globalStyles.textStyle}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={addModalVisible}
-        onRequestClose={() => {
-          Alert.alert("Task Added");
-          setAddModalVisible(!addModalVisible);
-        }}
-      >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
-            <Text style={globalStyles.modalText}>Enter Task: </Text>
-            <TextInput
-              style={globalStyles.input}
-              placeholder="task name"
-              onChangeText={(val) => setName(val)}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="class(optional)"
-              onChangeText={(val) => setClassName(val)}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="description"
-              onChangeText={(val) => setDesc(val)}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="due date"
-              onChangeText={(val) => setDate(val)}
-            />
-            <TextInput
-              style={globalStyles.input}
-              placeholder="time(optional)"
-              onChangeText={(val) => setTime(val)}
-            />
-            <TextInput style={globalStyles.input} placeholder="set reminder" />
-
-            <Pressable
-              style={[globalStyles.button, globalStyles.buttonClose]}
-              onPress={() => {
-                setAddModalVisible(!addModalVisible);
-                setTasks([
-                  ...tasks,
-                  {
-                    id: nextId++,
-                    name: name,
-                    class: className,
-                    description: desc,
-                    dueDate: date,
-                    time: time,
-                  },
-                ]);
-              }}
-            >
-              <Text style={globalStyles.textStyle}>Add Task</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
 
       <View style={globalStyles.footer}>
         {[
@@ -179,7 +93,7 @@ export default function ViewTasksScreen({ navigation }) {
         ].map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate(item.screen)}
+            onPress={() => navigation.navigate(item.screen, { tasks: tasks })}
           >
             <Icon name={item.icon + "-outline"} size={50} />
           </TouchableOpacity>

@@ -145,7 +145,7 @@ export default function HomeScreen({ navigation }) {
         ].map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate(item.screen)}
+            onPress={() => navigation.navigate(item.screen, { tasks: tasks })}
           >
             <Icon name={item.icon + "-outline"} size={50} />
           </TouchableOpacity>

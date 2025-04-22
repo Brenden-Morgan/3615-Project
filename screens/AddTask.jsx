@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,32 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { useRoute } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { globalStyles } from "@/styles/global";
 
 export default function AddTaskScreen({ navigation }) {
-  const [course, setCourse] = useState("Course #");
-  const [taskName, setTaskName] = useState("");
-  const [notes, setNotes] = useState("");
+  let nextId = 0;
+
+  const route = useRoute();
+  const receivedArray = route.params?.tasks || [];
+  const [tasks, setTasks] = useState([]);
+
+  const handleSetTasks = () => {
+    setTasks([...receivedArray]);
+  };
+
+  useEffect(() => {
+    const onScreenLoad = () => {
+      handleSetTasks();
+    };
+    onScreenLoad();
+  }, []);
+
+  const [className, setClassName] = useState("Course #");
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [dueDate, setDueDate] = useState(new Date());
   const [showStartPicker, setShowStartPicker] = useState(false);
@@ -24,26 +42,31 @@ export default function AddTaskScreen({ navigation }) {
     <ScrollView style={styles.container}>
       <View style={styles.mainContent}>
         <Text style={styles.title}>ADD NEW TASK</Text>
-
+        {/* 
         <View style={styles.card}>
           //
           <Icon name="school-outline" size={20} />
-          <Text style={styles.courseText}>{course}</Text>
-        </View>
+        </View> */}
+
+        <TextInput
+          placeholder="Course #"
+          style={[styles.input]}
+          multiline
+          onChangeText={(val) => setClassName(val)}
+        />
 
         <TextInput
           placeholder="Task Name"
-          style={styles.input}
-          value={taskName}
-          onChangeText={setTaskName}
+          style={[styles.input]}
+          multiline
+          onChangeText={(val) => setName(val)}
         />
 
         <TextInput
           placeholder="Additional notes / information about task."
           style={[styles.input, styles.notes]}
           multiline
-          value={notes}
-          onChangeText={setNotes}
+          onChangeText={(val) => setDesc(val)}
         />
 
         <TouchableOpacity
@@ -55,17 +78,17 @@ export default function AddTaskScreen({ navigation }) {
             Start Date: {startDate.toDateString()}
           </Text>
         </TouchableOpacity>
-        {/* {showStartPicker && (
-        <DateTimePicker
-          value={startDate}
-          mode="date"
-          display="default"
-          onChange={(_, date) => {
-            setShowStartPicker(false);
-            if (date) setStartDate(date);
-          }}
-        />
-      )} */}
+        {showStartPicker && (
+          <DateTimePicker
+            value={startDate}
+            mode="date"
+            display="default"
+            onChange={(_, date) => {
+              setShowStartPicker(false);
+              if (date) setStartDate(date);
+            }}
+          />
+        )}
 
         <TouchableOpacity
           onPress={() => setShowDuePicker(true)}
@@ -76,19 +99,32 @@ export default function AddTaskScreen({ navigation }) {
             Due Date: {dueDate.toDateString()}
           </Text>
         </TouchableOpacity>
-        {/* {showDuePicker && (
-        <DateTimePicker
-          value={dueDate}
-          mode="date"
-          display="default"
-          onChange={(_, date) => {
-            setShowDuePicker(false);
-            if (date) setDueDate(date);
-          }}
-        />
-      )} */}
+        {showDuePicker && (
+          <DateTimePicker
+            value={dueDate}
+            mode="date"
+            display="default"
+            onChange={(_, date) => {
+              setShowDuePicker(false);
+              if (date) setDueDate(date);
+            }}
+          />
+        )}
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            setTasks([
+              ...tasks,
+              {
+                id: nextId++,
+                name: name,
+                class: className,
+                description: desc,
+              },
+            ]);
+          }}
+        >
           <Text style={styles.addButtonText}>Add Task</Text>
         </TouchableOpacity>
       </View>
@@ -104,7 +140,7 @@ export default function AddTaskScreen({ navigation }) {
         ].map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => navigation.navigate(item.screen)}
+            onPress={() => navigation.navigate(item.screen, { tasks: tasks })}
           >
             <Icon name={item.icon + "-outline"} size={50} />
           </TouchableOpacity>
@@ -171,5 +207,3 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
   },
 });
-
-//export default AddTaskScreen;
