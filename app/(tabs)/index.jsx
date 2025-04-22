@@ -5,6 +5,8 @@ import TimerScreen from "@/screens/timer";
 import ViewTasksScreen from "@/screens/viewTasks";
 import CalendarScreen from "@/screens/calendar";
 import SettingsScreen from "@/screens/settings";
+import AddTaskScreen from "@/screens/AddTask";
+import SetTimerScreen from "@/screens/SetTimerScreen";
 
 function app() {
   const Stack = createNativeStackNavigator();
@@ -15,6 +17,7 @@ function app() {
     >
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Timer" component={TimerScreen} />
+      <Stack.Screen name="AddTask" component={AddTaskScreen} />
       <Stack.Screen name="ViewTasks" component={ViewTasksScreen} />
       <Stack.Screen name="Calendar" component={CalendarScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />

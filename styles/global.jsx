@@ -77,16 +77,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  footer: {
-    flex: 0.2,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignContent: "flex-end",
-    justifyContent: "space-between",
-    padding: 10,
-    backgroundColor: "lightgreen",
-  },
-
   input: {
     borderWidth: 1,
     borderColor: "#777",
@@ -102,5 +92,22 @@ export const globalStyles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderRadius: 10,
+  },
+  footer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignContent: "flex-end",
+    justifyContent: "space-between",
+    padding: 10,
+    backgroundColor: "lightgreen",
+    borderColor: "#ddd",
+    borderTopWidth: 1,
+  },
+  navBar: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderColor: "#ddd",
   },
 });
