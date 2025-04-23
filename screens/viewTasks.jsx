@@ -131,7 +131,7 @@ export default function ViewTasksScreen({ navigation }) {
                 setEditModalVisible(!editModalVisible);
               }}
             >
-              <Text style={globalStyles.textStyle}>Delete Task</Text>
+              <Text style={globalStyles.textStyle}>Complete Task</Text>
             </Pressable>
             <Pressable
               style={[globalStyles.button, globalStyles.buttonClose]}
