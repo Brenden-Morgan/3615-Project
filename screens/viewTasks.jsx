@@ -35,16 +35,20 @@ export default function ViewTasksScreen({ navigation }) {
   }, []);
 
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
   const [className, setClassName] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [desc, setDesc] = useState("");
-  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const editScreen = (name) => {
+  const editScreen = (name, id, className, desc) => {
     setEditModalVisible(true);
     setName(name);
+    setId(id);
+    setClassName(className);
+    setDesc(desc);
   };
 
   const pressHandler = (key) => {
@@ -76,7 +80,11 @@ export default function ViewTasksScreen({ navigation }) {
             keyExtractor={(item) => item.id}
             data={tasks}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => pressHandler(item.id)}>
+              <TouchableOpacity
+                onPress={() =>
+                  editScreen(item.name, item.id, item.className, item.desc)
+                }
+              >
                 <Text style={styles.item}>{item.name}</Text>
               </TouchableOpacity>
             )}
@@ -100,6 +108,42 @@ export default function ViewTasksScreen({ navigation }) {
           </TouchableOpacity>
         ))}
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={editModalVisible}
+        onRequestClose={() => {
+          setEditModalVisible(!editModalVisible);
+        }}
+      >
+        <View style={globalStyles.centeredView}>
+          <View style={globalStyles.modalView}>
+            <Text style={globalStyles.modalText}>Task Info</Text>
+            <Text style={globalStyles.modalText}>Name: {name}</Text>
+            <Text style={globalStyles.modalText}>Class: {className}</Text>
+            <Text style={globalStyles.modalText}>Description: {desc}</Text>
+
+            <Pressable
+              style={[globalStyles.button, globalStyles.buttonClose]}
+              onPress={() => {
+                pressHandler(id);
+                setEditModalVisible(!editModalVisible);
+              }}
+            >
+              <Text style={globalStyles.textStyle}>Delete Task</Text>
+            </Pressable>
+            <Pressable
+              style={[globalStyles.button, globalStyles.buttonClose]}
+              onPress={() => {
+                setEditModalVisible(!editModalVisible);
+              }}
+            >
+              <Text style={globalStyles.textStyle}>Close</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

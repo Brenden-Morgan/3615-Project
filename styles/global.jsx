@@ -62,7 +62,7 @@ export const globalStyles = StyleSheet.create({
 
   header: {
     height: 80,
-    backgroundColor: "coral",
+    backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 12,
