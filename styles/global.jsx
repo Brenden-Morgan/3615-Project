@@ -122,4 +122,8 @@ export const globalStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "#ddd",
   },
+  homeText: {
+    fontSize: 50,
+    fontWeight: "bold",
+  },
 });

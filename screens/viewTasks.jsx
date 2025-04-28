@@ -82,7 +82,7 @@ export default function ViewTasksScreen({ navigation }) {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() =>
-                  editScreen(item.name, item.id, item.className, item.desc)
+                  editScreen(item.name, item.id, item.class, item.description)
                 }
               >
                 <Text style={styles.item}>{item.name}</Text>
@@ -117,15 +117,15 @@ export default function ViewTasksScreen({ navigation }) {
           setEditModalVisible(!editModalVisible);
         }}
       >
-        <View style={globalStyles.centeredView}>
-          <View style={globalStyles.modalView}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
             <Text style={globalStyles.modalText}>Task Info</Text>
             <Text style={globalStyles.modalText}>Name: {name}</Text>
             <Text style={globalStyles.modalText}>Class: {className}</Text>
             <Text style={globalStyles.modalText}>Description: {desc}</Text>
 
             <Pressable
-              style={[globalStyles.button, globalStyles.buttonClose]}
+              style={[styles.button, globalStyles.buttonClose]}
               onPress={() => {
                 pressHandler(id);
                 setEditModalVisible(!editModalVisible);
@@ -134,7 +134,7 @@ export default function ViewTasksScreen({ navigation }) {
               <Text style={globalStyles.textStyle}>Complete Task</Text>
             </Pressable>
             <Pressable
-              style={[globalStyles.button, globalStyles.buttonClose]}
+              style={[styles.button, globalStyles.buttonClose]}
               onPress={() => {
                 setEditModalVisible(!editModalVisible);
               }}
@@ -152,9 +152,31 @@ const styles = StyleSheet.create({
   item: {
     padding: 16,
     marginTop: 16,
-    borderColor: "#bbb",
+    borderColor: "black",
     borderWidth: 1,
     borderStyle: "dashed",
     borderRadius: 10,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
   },
 });

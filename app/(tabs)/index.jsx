@@ -16,7 +16,7 @@ function app() {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Timer" component={TimerScreen} />
+      <Stack.Screen name="Timer" component={SetTimerScreen} />
       <Stack.Screen name="AddTask" component={AddTaskScreen} />
       <Stack.Screen name="ViewTasks" component={ViewTasksScreen} />
       <Stack.Screen name="Calendar" component={CalendarScreen} />
