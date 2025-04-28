@@ -44,12 +44,7 @@ export default function AddTaskScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={globalStyles.header}>
-        <Text style={styles.title}>ADD NEW TASK</Text>
-        {/* 
-        <View style={styles.card}>
-          //
-          <Icon name="school-outline" size={20} />
-        </View> */}
+        <Text style={styles.title}>Add New Task</Text>
         <View style={globalStyles.header_settings}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Settings", { tasks: tasks })}
@@ -173,7 +168,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   title: {
-    fontSize: 25,
+    fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     marginVertical: 16,

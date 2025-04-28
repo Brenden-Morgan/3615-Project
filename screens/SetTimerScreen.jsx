@@ -172,7 +172,7 @@ export default function TimerScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#f0f4f8" },
   title: {
-    fontSize: 22,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
